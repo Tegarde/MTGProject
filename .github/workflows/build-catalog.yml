@@ -1,0 +1,93 @@
+name: Build catalog
+
+on:
+  schedule:
+    # Weekly, Monday 04:17 UTC. Offset from the hour to avoid GitHub's cron congestion.
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Rebuild even if the Scryfall bulk file has not changed"
+        type: boolean
+        default: false
+
+# Required to publish a release and to commit the updated manifest.
+permissions:
+  contents: write
+
+concurrency:
+  group: build-catalog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The builder is stdlib-only, so there is nothing to install.
+
+      - name: Decide whether a rebuild is needed
+        id: check
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, sys
+          sys.path.insert(0, "tools/catalog_builder")
+          import scryfall
+
+          bulk = scryfall.find_bulk_source("default_cards")
+          remote = bulk["updated_at"]
+
+          manifest = pathlib.Path("manifest.json")
+          current = json.loads(manifest.read_text()) if manifest.exists() else {}
+          local = current.get("scryfall_bulk_updated_at")
+          version = int(current.get("catalog_version", 0)) + 1
+
+          forced = os.environ.get("FORCE") == "true"
+          changed = forced or remote != local
+
+          print(f"changed={str(changed).lower()}")
+          print(f"version={version}")
+          print(f"remote_updated_at={remote}")
+          PY
+        env:
+          FORCE: ${{ inputs.force }}
+
+      - name: Build catalog
+        if: steps.check.outputs.changed == 'true'
+        run: python tools/catalog_builder/build_catalog.py --out build
+        env:
+          CATALOG_VERSION: ${{ steps.check.outputs.version }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Publish release
+        if: steps.check.outputs.changed == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: catalog-v${{ steps.check.outputs.version }}
+          name: Catalog v${{ steps.check.outputs.version }}
+          body: |
+            Card catalog built from Scryfall `default_cards`
+            (bulk updated `${{ steps.check.outputs.remote_updated_at }}`).
+
+            Downloaded automatically by the app; see `manifest.json`.
+          files: build/catalog-v${{ steps.check.outputs.version }}.sqlite.gz
+
+      - name: Commit manifest
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          git diff --staged --quiet || git commit -m "chore: catalog v${{ steps.check.outputs.version }}"
+          git push
+
+      - name: Report no-op
+        if: steps.check.outputs.changed != 'true'
+        run: echo "Scryfall bulk data unchanged since the last build; nothing to do."

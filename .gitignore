@@ -1,0 +1,39 @@
+# Build artifacts
+build/
+*.sqlite
+*.sqlite.gz
+*.sqlite-journal
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Flutter / Dart
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/build/
+app/android/.gradle/
+app/android/local.properties
+app/windows/flutter/ephemeral/
+.packages
+pubspec.lock
+
+# Secrets — never commit
+*.keystore
+*.jks
+key.properties
+GoogleService-Info.plist
+serviceAccount*.json
+
+# google-services.json is intentionally NOT ignored: it holds no secrets (see
+# planning/04-firestore-model.md §8 / planning/08-dev-testing-notes.md §6) and CI
+# needs it to build the Android app.
+
+# IDE / OS
+.idea/
+*.iml
+.DS_Store
+Thumbs.db

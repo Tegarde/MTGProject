@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "72976746895",
+    "project_id": "mtg-collection-15d93",
+    "storage_bucket": "mtg-collection-15d93.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72976746895:android:048b99a603b13e3a58e3fa",
+        "android_client_info": {
+          "package_name": "com.tegarde.mtg_collection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72976746895-pvbqsrchjbmonbblerp15kidmrn200u4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tegarde.mtg_collection",
+            "certificate_hash": "dab053fae2b9665fd90ecdf874987f15ec79c283"
+          }
+        },
+        {
+          "client_id": "72976746895-550dfugetm1mpcla2ec1dp5dcs1lt8i3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM-TcMejhR8B5WRgaf3tKKau0vUKomJWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72976746895-550dfugetm1mpcla2ec1dp5dcs1lt8i3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
