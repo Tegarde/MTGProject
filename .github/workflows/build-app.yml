@@ -18,6 +18,9 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          # Pinned to match the version verified locally (app/android's Gradle
+          # wrapper + AGP versions are tied to what this Flutter release expects).
+          flutter-version: "3.35.1"
           channel: stable
           cache: true
 
