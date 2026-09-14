@@ -1,12 +1,12 @@
 {
-  "catalog_version": 5,
+  "catalog_version": 6,
   "schema_version": 1,
-  "url": "https://github.com/Tegarde/MTGProject/releases/download/catalog-v5/catalog-v5.sqlite.gz",
-  "compressed_size": 26104202,
-  "sha256": "3b5ed03fbf04ad57468fff021a6512685f39bc63ada4474f859cbe0a653f4693",
-  "built_at": "2026-09-07T09:24:31Z",
-  "scryfall_bulk_updated_at": "2026-09-07T09:05:37.452+00:00",
-  "card_count": 38633,
-  "printing_count": 117627,
+  "url": "https://github.com/Tegarde/MTGProject/releases/download/catalog-v6/catalog-v6.sqlite.gz",
+  "compressed_size": 26181024,
+  "sha256": "8acf109a5c2acc64307cb625d765d773b747a7ba33a409ab2784156be1025007",
+  "built_at": "2026-09-14T09:55:40Z",
+  "scryfall_bulk_updated_at": "2026-09-14T09:05:27.256+00:00",
+  "card_count": 38754,
+  "printing_count": 117941,
   "set_count": 1049
 }
